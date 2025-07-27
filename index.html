@@ -1,72 +1,265 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>DEVICE WARNING</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>DATA PENERIMAAN BARANG</title>
   <style>
     body {
-      background-color: white;
-      color: red;
-      font-family: Arial, sans-serif;
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
       text-align: center;
-      padding: 50px;
+      padding: 50px 20px 160px;
+      background: linear-gradient(to right, #c9d6ff, #e2e2e2);
+      color: #333;
     }
 
     h1 {
-      font-size: 1.0em;
-      animation: blink 1s infinite;
+      font-size: 32px;
+      margin-bottom: 20px;
     }
 
-    .loading {
-      margin-top: 20px;
-      font-size: 1.2em;
-      color: #000;
+    #count {
+      font-size: 80px;
+      font-weight: bold;
+      margin: 20px 0;
+      color: #2e7d32;
     }
 
-    @keyframes blink {
-      50% { opacity: 0; }
+    .btn {
+      padding: 16px 32px;
+      font-size: 20px;
+      margin: 12px 10px;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+      transition: transform 0.2s, background-color 0.2s;
     }
 
-    audio {
-      display: none;
+    .btn:hover {
+      transform: scale(1.05);
+    }
+
+    .plus {
+      background-color: #4caf50;
+      color: white;
+    }
+
+    .minus {
+      position: fixed;
+      bottom: 20px;
+      left: 20px;
+      padding: 10px 18px;
+      font-size: 14px;
+      background-color: #1976d2;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+      cursor: pointer;
+      transition: background-color 0.2s ease;
+    }
+
+    .minus:hover {
+      background-color: #1565c0;
+    }
+
+    .reset {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      padding: 10px 18px;
+      font-size: 14px;
+      background-color: #f44336;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+      cursor: pointer;
+      transition: background-color 0.2s ease;
+    }
+
+    .reset:hover {
+      background-color: #d32f2f;
+    }
+
+    .storage-info {
+      position: fixed;
+      bottom: 60px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 13px;
+      color: #444;
+      opacity: 0.9;
+    }
+
+    .history {
+      margin-top: 30px;
+      max-height: 200px;
+      overflow-y: auto;
+      text-align: left;
+      background: #fff;
+      padding: 15px;
+      border-radius: 10px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    }
+
+    .history h2 {
+      margin: 0 0 10px;
+      font-size: 18px;
+    }
+
+    .history ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      font-size: 14px;
+    }
+
+    .history li {
+      padding: 4px 0;
+      border-bottom: 1px dashed #ccc;
+    }
+
+    .clear-history {
+      margin-top: 10px;
+      background-color: #ff9800;
+      color: white;
+      border: none;
+      padding: 8px 14px;
+      border-radius: 8px;
+      font-size: 14px;
+      cursor: pointer;
+    }
+
+    .clear-history:hover {
+      background-color: #e68900;
     }
   </style>
 </head>
-<body onclick="document.documentElement.requestFullscreen()">
-  <audio id="alarm" src="https://www.soundjay.com/phone/telephone-ring-03.mp3" autoplay loop></audio>
+<body>
 
-  <h1>⚠️ SISTEM TIDAK AMAN ⚠️</h1>
-  <div class="loading">Proses Pemindahan Data...</div>
+  <h1>DATA BARANG MASUK (INBOUND)</h1>
+  <div id="count">0</div>
+
+  <button class="btn plus" id="btnPlus">+1</button>
+  <button class="minus" id="btnMinus">-1</button>
+  <button class="reset" id="btnReset">Reset</button>
+
+  <div class="storage-info" id="storageInfo">📦 Menyimpan...</div>
+
+  <div class="history">
+    <h2>📘 Riwayat Data Masuk</h2>
+    <ul id="historyList"></ul>
+    <button class="clear-history" onclick="resetRiwayat()">🗑 Reset Riwayat</button>
+  </div>
 
   <script>
-    const alarm = document.getElementById("alarm");
+    let count = 0;
+    let history = [];
 
-    window.onload = () => {
-      alarm.volume = 1;
-      alarm.play();
+    function formatTime(date) {
+      return date.toLocaleString('id-ID', {
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit',
+        day: '2-digit',
+        month: '2-digit',
+        year: 'numeric'
+      });
+    }
 
-      navigator.vibrate?.(300);
+    function updateDisplay() {
+      document.getElementById('count').textContent = count;
+    }
 
-      setTimeout(() => {
-        alert("⚠️ PERINGATAN: Handphone anda sedang di Hack ");
-      }, 3000);
+    function updateStorageInfo() {
+      const now = new Date();
+      const info = "📦 Doni Kurniawan ©2025: " + formatTime(now);
+      document.getElementById("storageInfo").textContent = info;
+    }
 
-      setTimeout(() => {
-        alert("⚠️ MENGIRIM SEMUA FILE KE SERVER...");
-      }, 6000);
+    function saveAll() {
+      localStorage.setItem('tasbih', count);
+      localStorage.setItem('tasbih_history', JSON.stringify(history));
+      updateStorageInfo();
+    }
 
-      setTimeout(() => {
-        alert("📵 SEMUA DATA HILANG!");
-      }, 9000);
+    function logHistory(action) {
+      const entry = {
+        waktu: formatTime(new Date()),
+        nilai: count,
+        aksi: action
+      };
+      history.unshift(entry);
+      if (history.length > 50) history.pop();
+      updateHistoryList();
+    }
 
-      setTimeout(() => {
-        alarm.pause();
-        alert(" Sorry yahh .. Cuma becanda Kok . Perangkat mu aman  tenang ajh , website ini cuma hiburan ©by Doni ");
-        document.body.innerHTML = `<h1 style="color:green;"> Maaf yah ,cuma becanda. Hehehe </h1>`;
-        document.body.style.background = "#111";
-      }, 12000);
-    };
+    function updateHistoryList() {
+      const list = document.getElementById("historyList");
+      list.innerHTML = "";
+      history.forEach(item => {
+        const li = document.createElement("li");
+        li.textContent = `[${item.waktu}] ${item.aksi} → ${item.nilai}`;
+        list.appendChild(li);
+      });
+    }
+
+    function resetRiwayat() {
+      const pass = prompt("Masukkan password untuk reset riwayat:");
+      if (pass === "1234") {
+        history = [];
+        localStorage.removeItem("tasbih_history");
+        updateHistoryList();
+        alert("Riwayat berhasil dihapus.");
+      } else {
+        alert("Password salah!");
+      }
+    }
+
+    document.getElementById("btnPlus").addEventListener("click", () => {
+      count++;
+      logHistory("Tambah");
+      saveAll();
+      updateDisplay();
+    });
+
+    document.getElementById("btnMinus").addEventListener("click", () => {
+      if (count > 0) {
+        count--;
+        logHistory("Kurang");
+        saveAll();
+        updateDisplay();
+      }
+    });
+
+    document.getElementById("btnReset").addEventListener("click", () => {
+      const pass = prompt("Masukkan password untuk reset:");
+      if (pass === "1234") {
+        count = 0;
+        logHistory("Reset");
+        saveAll();
+        updateDisplay();
+        alert("Berhasil direset.");
+      } else {
+        alert("Password salah!");
+      }
+    });
+
+    function init() {
+      const savedCount = localStorage.getItem("tasbih");
+      const savedHistory = localStorage.getItem("tasbih_history");
+      count = savedCount ? parseInt(savedCount) : 0;
+      history = savedHistory ? JSON.parse(savedHistory) : [];
+      updateDisplay();
+      updateHistoryList();
+      updateStorageInfo();
+    }
+
+    init();
   </script>
+
 </body>
 </html>
