@@ -2,264 +2,296 @@
 <html lang="id">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>DATA PENERIMAAN BARANG</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Kalkulator & Penghitung Karton</title>
   <style>
+    * {
+      box-sizing: border-box;
+    }
+
     body {
+      font-family: Arial, sans-serif;
+      background: #eef6ff;
       margin: 0;
-      font-family: 'Segoe UI', sans-serif;
-      text-align: center;
-      padding: 50px 20px 160px;
-      background: linear-gradient(to right, #c9d6ff, #e2e2e2);
-      color: #333;
-    }
-
-    h1 {
-      font-size: 32px;
-      margin-bottom: 20px;
-    }
-
-    #count {
-      font-size: 80px;
-      font-weight: bold;
-      margin: 20px 0;
-      color: #2e7d32;
-    }
-
-    .btn {
-      padding: 16px 32px;
-      font-size: 20px;
-      margin: 12px 10px;
-      border: none;
-      border-radius: 10px;
-      cursor: pointer;
-      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-      transition: transform 0.2s, background-color 0.2s;
-    }
-
-    .btn:hover {
-      transform: scale(1.05);
-    }
-
-    .plus {
-      background-color: #4caf50;
-      color: white;
-    }
-
-    .minus {
-      position: fixed;
-      bottom: 20px;
-      left: 20px;
-      padding: 10px 18px;
-      font-size: 14px;
-      background-color: #1976d2;
-      color: white;
-      border: none;
-      border-radius: 8px;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.2);
-      cursor: pointer;
-      transition: background-color 0.2s ease;
-    }
-
-    .minus:hover {
-      background-color: #1565c0;
-    }
-
-    .reset {
-      position: fixed;
-      bottom: 20px;
-      right: 20px;
-      padding: 10px 18px;
-      font-size: 14px;
-      background-color: #f44336;
-      color: white;
-      border: none;
-      border-radius: 8px;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.2);
-      cursor: pointer;
-      transition: background-color 0.2s ease;
-    }
-
-    .reset:hover {
-      background-color: #d32f2f;
-    }
-
-    .storage-info {
-      position: fixed;
-      bottom: 60px;
-      left: 50%;
-      transform: translateX(-50%);
-      font-size: 13px;
-      color: #444;
-      opacity: 0.9;
-    }
-
-    .history {
-      margin-top: 30px;
-      max-height: 200px;
-      overflow-y: auto;
-      text-align: left;
-      background: #fff;
-      padding: 15px;
-      border-radius: 10px;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-    }
-
-    .history h2 {
-      margin: 0 0 10px;
-      font-size: 18px;
-    }
-
-    .history ul {
-      list-style: none;
       padding: 0;
-      margin: 0;
-      font-size: 14px;
     }
 
-    .history li {
-      padding: 4px 0;
-      border-bottom: 1px dashed #ccc;
+    .container {
+      background: white;
+      max-width: 100%;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      margin: 0 auto;
     }
 
-    .clear-history {
-      margin-top: 10px;
-      background-color: #ff9800;
-      color: white;
-      border: none;
-      padding: 8px 14px;
+    h2 {
+      text-align: center;
+      color: #003366;
+      margin-bottom: 15px;
+    }
+
+    label {
+      font-weight: bold;
+      display: block;
+      margin-top: 15px;
+      font-size: 16px;
+    }
+
+    input {
+      width: 100%;
+      padding: 10px;
+      margin-top: 5px;
+      font-size: 16px;
+      border: 1px solid #ccc;
       border-radius: 8px;
-      font-size: 14px;
+    }
+
+    .result {
+      margin-top: 10px;
+      font-size: 18px;
+      text-align: center;
+      color: #004080;
+    }
+
+    .calculator {
+      margin-bottom: 25px;
+    }
+
+    .calc-input {
+      width: 100%;
+      padding: 12px;
+      font-size: 20px;
+      margin-bottom: 5px;
+      border: 2px solid #007acc;
+      border-radius: 10px;
+      text-align: right;
+    }
+
+    .buttons {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 8px;
+    }
+
+    .buttons button, .action-btn {
+      padding: 12px;
+      font-size: 18px;
+      border: none;
+      background: #007acc;
+      color: white;
+      border-radius: 8px;
       cursor: pointer;
     }
 
-    .clear-history:hover {
-      background-color: #e68900;
+    .buttons button:hover, .action-btn:hover {
+      background: #005f99;
+    }
+
+    .action-row {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-top: 20px;
+    }
+
+    .action-row button {
+      width: 100%;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 15px;
+      overflow-x: auto;
+    }
+
+    th, td {
+      border: 1px solid #ccc;
+      padding: 10px;
+      font-size: 14px;
+      text-align: center;
+    }
+
+    th {
+      background-color: #f0f8ff;
+    }
+
+    .footer {
+      text-align: center;
+      font-size: 13px;
+      margin-top: 30px;
+      color: #777;
+    }
+
+    @media (max-width: 600px) {
+      .buttons button, .action-btn {
+        font-size: 16px;
+        padding: 10px;
+      }
+      .calc-input {
+        font-size: 18px;
+      }
     }
   </style>
 </head>
 <body>
+  <div class="container">
+    <h2>Kalkulator</h2>
+    <div class="calculator">
+      <input type="text" id="calcDisplay" class="calc-input" disabled />
+      <div class="result" id="calcResult">Hasil: 0</div>
+      <div class="buttons">
+        <button onclick="appendCalc('7')">7</button>
+        <button onclick="appendCalc('8')">8</button>
+        <button onclick="appendCalc('9')">9</button>
+        <button onclick="appendCalc('/')">÷</button>
+        <button onclick="appendCalc('4')">4</button>
+        <button onclick="appendCalc('5')">5</button>
+        <button onclick="appendCalc('6')">6</button>
+        <button onclick="appendCalc('*')">×</button>
+        <button onclick="appendCalc('1')">1</button>
+        <button onclick="appendCalc('2')">2</button>
+        <button onclick="appendCalc('3')">3</button>
+        <button onclick="appendCalc('-')">−</button>
+        <button onclick="appendCalc('0')">0</button>
+        <button onclick="appendCalc('.')">.</button>
+        <button onclick="calculate()">=</button>
+        <button onclick="appendCalc('+')">+</button>
+        <button onclick="clearCalc()" style="grid-column: span 4; background: #e53935;">C</button>
+      </div>
+    </div>
 
-  <h1>DATA BARANG MASUK (INBOUND)</h1>
-  <div id="count">0</div>
+    <h2>Penghitung Karton</h2>
+    <label>Kode Barang:</label>
+    <input type="text" id="kodeBarang" placeholder="Masukkan kode barang...">
 
-  <button class="btn plus" id="btnPlus">+1</button>
-  <button class="minus" id="btnMinus">-1</button>
-  <button class="reset" id="btnReset">Reset</button>
+    <label>Total Qty Datang (pcs):</label>
+    <input type="number" id="totalQty" placeholder="Masukan pcs" oninput="hitung()">
 
-  <div class="storage-info" id="storageInfo">📦 Menyimpan...</div>
+    <label>Isi per Karton (pcs):</label>
+    <input type="number" id="isiKarton" placeholder="Masukan/karton" oninput="hitung()">
 
-  <div class="history">
-    <h2>📘 Riwayat Data Masuk</h2>
-    <ul id="historyList"></ul>
-    <button class="clear-history" onclick="resetRiwayat()">🗑 Reset Riwayat</button>
+    <div class="result" id="hasil">
+      Jumlah Karton: 0<br />
+      Sisa Pcs: 0
+    </div>
+
+    <div class="action-row">
+      <button class="action-btn" onclick="simpanRiwayat()">Simpan Riwayat</button>
+      <button class="action-btn" style="background:#e53935" onclick="hapusRiwayat()">Hapus Semua</button>
+    </div>
+
+    <h2>📋 Riwayat Penerimaan</h2>
+    <div style="overflow-x: auto;">
+      <table id="tabelRiwayat">
+        <thead>
+          <tr>
+            <th>No</th>
+            <th>Kode</th>
+            <th>Total Qty</th>
+            <th>Karton</th>
+            <th>Sisa</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+
+    <div class="footer">
+      &copy; doni.studio. All rights reserved.
+    </div>
   </div>
 
   <script>
-    let count = 0;
-    let history = [];
+    let calcValue = '';
 
-    function formatTime(date) {
-      return date.toLocaleString('id-ID', {
-        hour: '2-digit',
-        minute: '2-digit',
-        second: '2-digit',
-        day: '2-digit',
-        month: '2-digit',
-        year: 'numeric'
+    function appendCalc(val) {
+      calcValue += val;
+      document.getElementById('calcDisplay').value = calcValue;
+      autoCalculate();
+    }
+
+    function autoCalculate() {
+      try {
+        const result = eval(calcValue);
+        if (!isNaN(result)) {
+          document.getElementById('calcResult').innerText = "Hasil: " + result;
+        }
+      } catch {
+        document.getElementById('calcResult').innerText = "Hasil: ...";
+      }
+    }
+
+    function calculate() {
+      try {
+        const result = eval(calcValue);
+        if (!isNaN(result)) {
+          document.getElementById('calcResult').innerText = "Hasil: " + result;
+        }
+      } catch {
+        document.getElementById('calcResult').innerText = "Hasil: Error";
+      }
+    }
+
+    function clearCalc() {
+      calcValue = '';
+      document.getElementById('calcDisplay').value = '';
+      document.getElementById('calcResult').innerText = "Hasil: 0";
+    }
+
+    function hitung() {
+      const total = parseInt(document.getElementById('totalQty').value) || 0;
+      const perKarton = parseInt(document.getElementById('isiKarton').value) || 1;
+      const karton = Math.floor(total / perKarton);
+      const sisa = total % perKarton;
+      document.getElementById('hasil').innerHTML = `Jumlah Karton: <strong>${karton}</strong><br>Sisa Pcs: <strong>${sisa}</strong>`;
+    }
+
+    function simpanRiwayat() {
+      const kode = document.getElementById('kodeBarang').value.trim();
+      const total = parseInt(document.getElementById('totalQty').value) || 0;
+      const perKarton = parseInt(document.getElementById('isiKarton').value) || 1;
+      const karton = Math.floor(total / perKarton);
+      const sisa = total % perKarton;
+
+      if (!kode) {
+        alert("Masukkan kode barang!");
+        return;
+      }
+
+      const data = { kode, total, karton, sisa };
+      let riwayat = JSON.parse(localStorage.getItem("riwayatKarton") || "[]");
+      riwayat.push(data);
+      localStorage.setItem("riwayatKarton", JSON.stringify(riwayat));
+      tampilkanRiwayat();
+    }
+
+    function tampilkanRiwayat() {
+      let riwayat = JSON.parse(localStorage.getItem("riwayatKarton") || "[]");
+      const tbody = document.querySelector("#tabelRiwayat tbody");
+      tbody.innerHTML = "";
+      riwayat.forEach((item, index) => {
+        const row = document.createElement("tr");
+        row.innerHTML = `
+          <td>${index + 1}</td>
+          <td>${item.kode}</td>
+          <td>${item.total}</td>
+          <td>${item.karton}</td>
+          <td>${item.sisa}</td>
+        `;
+        tbody.appendChild(row);
       });
     }
 
-    function updateDisplay() {
-      document.getElementById('count').textContent = count;
-    }
-
-    function updateStorageInfo() {
-      const now = new Date();
-      const info = "📦 Doni Kurniawan ©2025: " + formatTime(now);
-      document.getElementById("storageInfo").textContent = info;
-    }
-
-    function saveAll() {
-      localStorage.setItem('tasbih', count);
-      localStorage.setItem('tasbih_history', JSON.stringify(history));
-      updateStorageInfo();
-    }
-
-    function logHistory(action) {
-      const entry = {
-        waktu: formatTime(new Date()),
-        nilai: count,
-        aksi: action
-      };
-      history.unshift(entry);
-      if (history.length > 50) history.pop();
-      updateHistoryList();
-    }
-
-    function updateHistoryList() {
-      const list = document.getElementById("historyList");
-      list.innerHTML = "";
-      history.forEach(item => {
-        const li = document.createElement("li");
-        li.textContent = `[${item.waktu}] ${item.aksi} → ${item.nilai}`;
-        list.appendChild(li);
-      });
-    }
-
-    function resetRiwayat() {
-      const pass = prompt("Masukkan password untuk reset riwayat:");
-      if (pass === "1234") {
-        history = [];
-        localStorage.removeItem("tasbih_history");
-        updateHistoryList();
-        alert("Riwayat berhasil dihapus.");
-      } else {
-        alert("Password salah!");
+    function hapusRiwayat() {
+      if (confirm("Hapus semua riwayat?")) {
+        localStorage.removeItem("riwayatKarton");
+        tampilkanRiwayat();
       }
     }
 
-    document.getElementById("btnPlus").addEventListener("click", () => {
-      count++;
-      logHistory("Tambah");
-      saveAll();
-      updateDisplay();
-    });
-
-    document.getElementById("btnMinus").addEventListener("click", () => {
-      if (count > 0) {
-        count--;
-        logHistory("Kurang");
-        saveAll();
-        updateDisplay();
-      }
-    });
-
-    document.getElementById("btnReset").addEventListener("click", () => {
-      const pass = prompt("Masukkan password untuk reset:");
-      if (pass === "1234") {
-        count = 0;
-        logHistory("Reset");
-        saveAll();
-        updateDisplay();
-        alert("Berhasil direset.");
-      } else {
-        alert("Password salah!");
-      }
-    });
-
-    function init() {
-      const savedCount = localStorage.getItem("tasbih");
-      const savedHistory = localStorage.getItem("tasbih_history");
-      count = savedCount ? parseInt(savedCount) : 0;
-      history = savedHistory ? JSON.parse(savedHistory) : [];
-      updateDisplay();
-      updateHistoryList();
-      updateStorageInfo();
-    }
-
-    init();
+    window.onload = tampilkanRiwayat;
   </script>
-
 </body>
 </html>
