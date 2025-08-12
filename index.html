@@ -1,297 +1,225 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Kalkulator & Penghitung Karton</title>
-  <style>
-    * {
-      box-sizing: border-box;
-    }
-
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Penerimaan Barang Mobile</title>
+<style>
     body {
-      font-family: Arial, sans-serif;
-      background: #eef6ff;
-      margin: 0;
-      padding: 0;
-    }
-
-    .container {
-      background: white;
-      max-width: 100%;
-      padding: 20px;
-      border-radius: 12px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.1);
-      margin: 0 auto;
-    }
-
-    h2 {
-      text-align: center;
-      color: #003366;
-      margin-bottom: 15px;
-    }
-
-    label {
-      font-weight: bold;
-      display: block;
-      margin-top: 15px;
-      font-size: 16px;
-    }
-
-    input {
-      width: 100%;
-      padding: 10px;
-      margin-top: 5px;
-      font-size: 16px;
-      border: 1px solid #ccc;
-      border-radius: 8px;
-    }
-
-    .result {
-      margin-top: 10px;
-      font-size: 18px;
-      text-align: center;
-      color: #004080;
-    }
-
-    .calculator {
-      margin-bottom: 25px;
-    }
-
-    .calc-input {
-      width: 100%;
-      padding: 12px;
-      font-size: 20px;
-      margin-bottom: 5px;
-      border: 2px solid #007acc;
-      border-radius: 10px;
-      text-align: right;
-    }
-
-    .buttons {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 8px;
-    }
-
-    .buttons button, .action-btn {
-      padding: 12px;
-      font-size: 18px;
-      border: none;
-      background: #007acc;
-      color: white;
-      border-radius: 8px;
-      cursor: pointer;
-    }
-
-    .buttons button:hover, .action-btn:hover {
-      background: #005f99;
-    }
-
-    .action-row {
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-      margin-top: 20px;
-    }
-
-    .action-row button {
-      width: 100%;
-    }
-
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      margin-top: 15px;
-      overflow-x: auto;
-    }
-
-    th, td {
-      border: 1px solid #ccc;
-      padding: 10px;
-      font-size: 14px;
-      text-align: center;
-    }
-
-    th {
-      background-color: #f0f8ff;
-    }
-
-    .footer {
-      text-align: center;
-      font-size: 13px;
-      margin-top: 30px;
-      color: #777;
-    }
-
-    @media (max-width: 600px) {
-      .buttons button, .action-btn {
-        font-size: 16px;
+        font-family: Arial, sans-serif;
         padding: 10px;
-      }
-      .calc-input {
-        font-size: 18px;
-      }
+        background: #f0f8ff;
+        margin: 0;
     }
-  </style>
+    h2 {
+        text-align: center;
+        color: #333;
+        font-size: 1.2rem;
+    }
+    .form-container {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        margin-bottom: 15px;
+    }
+    input, button {
+        padding: 12px;
+        font-size: 16px;
+        border-radius: 5px;
+        border: 1px solid #ccc;
+    }
+    button {
+        background: #007bff;
+        color: white;
+        font-weight: bold;
+        border: none;
+    }
+    button:hover {
+        background: #0056b3;
+    }
+    .table-wrapper {
+        overflow-x: auto;
+    }
+    table {
+        min-width: 650px;
+        border-collapse: collapse;
+        width: 100%;
+        background: white;
+        font-size: 14px;
+    }
+    th, td {
+        border: 1px solid #ddd;
+        padding: 6px;
+        text-align: center;
+    }
+    th {
+        background: #007bff;
+        color: white;
+    }
+    td input[type="number"],
+    td input[type="text"] {
+        width: 70px;
+        padding: 4px;
+        font-size: 14px;
+        border: 1px solid #ccc;
+        border-radius: 3px;
+        text-align: center;
+    }
+    .delete-btn {
+        background: red;
+        padding: 4px 8px;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 13px;
+    }
+    .reset-btn {
+        background: orange;
+        margin-top: 10px;
+        padding: 10px;
+        font-size: 16px;
+        width: 100%;
+    }
+    .footer {
+        text-align: center;
+        margin-top: 15px;
+        font-size: 12px;
+        color: #777;
+    }
+</style>
 </head>
 <body>
-  <div class="container">
-    <h2>Kalkulator</h2>
-    <div class="calculator">
-      <input type="text" id="calcDisplay" class="calc-input" disabled />
-      <div class="result" id="calcResult">Hasil: 0</div>
-      <div class="buttons">
-        <button onclick="appendCalc('7')">7</button>
-        <button onclick="appendCalc('8')">8</button>
-        <button onclick="appendCalc('9')">9</button>
-        <button onclick="appendCalc('/')">÷</button>
-        <button onclick="appendCalc('4')">4</button>
-        <button onclick="appendCalc('5')">5</button>
-        <button onclick="appendCalc('6')">6</button>
-        <button onclick="appendCalc('*')">×</button>
-        <button onclick="appendCalc('1')">1</button>
-        <button onclick="appendCalc('2')">2</button>
-        <button onclick="appendCalc('3')">3</button>
-        <button onclick="appendCalc('-')">−</button>
-        <button onclick="appendCalc('0')">0</button>
-        <button onclick="appendCalc('.')">.</button>
-        <button onclick="calculate()">=</button>
-        <button onclick="appendCalc('+')">+</button>
-        <button onclick="clearCalc()" style="grid-column: span 4; background: #e53935;">C</button>
-      </div>
-    </div>
 
-    <h2>Penghitung Karton</h2>
-    <label>Kode Barang:</label>
-    <input type="text" id="kodeBarang" placeholder="Masukkan kode barang...">
+<h2>PENERIMAAN BARANG</h2>
 
-    <label>Total Qty Datang (pcs):</label>
-    <input type="number" id="totalQty" placeholder="Masukan pcs" oninput="hitung()">
+<div class="form-container">
+    <input type="text" id="kodeBarang" placeholder="Kode Barang">
+    <input type="number" id="totalBarang" placeholder="Total Barang (pcs)">
+    <input type="number" id="pcsPerDus" placeholder="Pcs per Dus">
+    <input type="text" id="jumlahDus" placeholder="Jumlah Dus" readonly>
+    <input type="text" id="sisaPcs" placeholder="Sisa Pcs" readonly>
+    <button onclick="tambahData()">Simpan</button>
+</div>
 
-    <label>Isi per Karton (pcs):</label>
-    <input type="number" id="isiKarton" placeholder="Masukan/karton" oninput="hitung()">
-
-    <div class="result" id="hasil">
-      Jumlah Karton: 0<br />
-      Sisa Pcs: 0
-    </div>
-
-    <div class="action-row">
-      <button class="action-btn" onclick="simpanRiwayat()">Simpan Riwayat</button>
-      <button class="action-btn" style="background:#e53935" onclick="hapusRiwayat()">Hapus Semua</button>
-    </div>
-
-    <h2>📋 Riwayat Penerimaan</h2>
-    <div style="overflow-x: auto;">
-      <table id="tabelRiwayat">
-        <thead>
-          <tr>
+<div class="table-wrapper">
+<table id="tabelData">
+    <thead>
+        <tr>
+            <th>Cek</th>
             <th>No</th>
-            <th>Kode</th>
-            <th>Total Qty</th>
-            <th>Karton</th>
-            <th>Sisa</th>
-          </tr>
-        </thead>
-        <tbody></tbody>
-      </table>
-    </div>
+            <th>Kode Barang</th>
+            <th>Total Barang</th>
+            <th>Pcs/Dus</th>
+            <th>Jumlah Dus</th>
+            <th>Sisa Pcs</th>
+            <th>Aksi</th>
+        </tr>
+    </thead>
+    <tbody></tbody>
+</table>
+</div>
 
-    <div class="footer">
-      &copy; doni.studio. All rights reserved.
-    </div>
-  </div>
+<button class="reset-btn" onclick="resetData()">♻ Reset Semua Data</button>
 
-  <script>
-    let calcValue = '';
+<div class="footer">© doni.studio. All rights reserved.</div>
 
-    function appendCalc(val) {
-      calcValue += val;
-      document.getElementById('calcDisplay').value = calcValue;
-      autoCalculate();
-    }
+<script>
+let dataBarang = JSON.parse(localStorage.getItem('dataBarang')) || [];
 
-    function autoCalculate() {
-      try {
-        const result = eval(calcValue);
-        if (!isNaN(result)) {
-          document.getElementById('calcResult').innerText = "Hasil: " + result;
-        }
-      } catch {
-        document.getElementById('calcResult').innerText = "Hasil: ...";
-      }
-    }
+document.getElementById("totalBarang").addEventListener("input", hitungDus);
+document.getElementById("pcsPerDus").addEventListener("input", hitungDus);
 
-    function calculate() {
-      try {
-        const result = eval(calcValue);
-        if (!isNaN(result)) {
-          document.getElementById('calcResult').innerText = "Hasil: " + result;
-        }
-      } catch {
-        document.getElementById('calcResult').innerText = "Hasil: Error";
-      }
-    }
+function hitungDus() {
+    let total = parseInt(document.getElementById("totalBarang").value) || 0;
+    let perDus = parseInt(document.getElementById("pcsPerDus").value) || 0;
+    let dus = perDus > 0 ? Math.floor(total / perDus) : 0;
+    let sisa = perDus > 0 ? total % perDus : 0;
+    document.getElementById("jumlahDus").value = dus;
+    document.getElementById("sisaPcs").value = sisa;
+}
 
-    function clearCalc() {
-      calcValue = '';
-      document.getElementById('calcDisplay').value = '';
-      document.getElementById('calcResult').innerText = "Hasil: 0";
-    }
-
-    function hitung() {
-      const total = parseInt(document.getElementById('totalQty').value) || 0;
-      const perKarton = parseInt(document.getElementById('isiKarton').value) || 1;
-      const karton = Math.floor(total / perKarton);
-      const sisa = total % perKarton;
-      document.getElementById('hasil').innerHTML = `Jumlah Karton: <strong>${karton}</strong><br>Sisa Pcs: <strong>${sisa}</strong>`;
-    }
-
-    function simpanRiwayat() {
-      const kode = document.getElementById('kodeBarang').value.trim();
-      const total = parseInt(document.getElementById('totalQty').value) || 0;
-      const perKarton = parseInt(document.getElementById('isiKarton').value) || 1;
-      const karton = Math.floor(total / perKarton);
-      const sisa = total % perKarton;
-
-      if (!kode) {
-        alert("Masukkan kode barang!");
+function tambahData() {
+    let kode = document.getElementById("kodeBarang").value.trim();
+    let total = parseInt(document.getElementById("totalBarang").value) || 0;
+    let perDus = parseInt(document.getElementById("pcsPerDus").value) || 0;
+    if (!kode || total <= 0 || perDus <= 0) {
+        alert("Masukkan kode barang, total barang, dan pcs/dus yang benar!");
         return;
-      }
-
-      const data = { kode, total, karton, sisa };
-      let riwayat = JSON.parse(localStorage.getItem("riwayatKarton") || "[]");
-      riwayat.push(data);
-      localStorage.setItem("riwayatKarton", JSON.stringify(riwayat));
-      tampilkanRiwayat();
     }
+    let dus = Math.floor(total / perDus);
+    let sisa = total % perDus;
+    dataBarang.push({ kode, total, perDus, dus, sisa, cek: false });
+    simpanData();
+    renderTabel();
+    document.getElementById("kodeBarang").value = "";
+    document.getElementById("totalBarang").value = "";
+    document.getElementById("pcsPerDus").value = "";
+    document.getElementById("jumlahDus").value = "";
+    document.getElementById("sisaPcs").value = "";
+}
 
-    function tampilkanRiwayat() {
-      let riwayat = JSON.parse(localStorage.getItem("riwayatKarton") || "[]");
-      const tbody = document.querySelector("#tabelRiwayat tbody");
-      tbody.innerHTML = "";
-      riwayat.forEach((item, index) => {
-        const row = document.createElement("tr");
-        row.innerHTML = `
-          <td>${index + 1}</td>
-          <td>${item.kode}</td>
-          <td>${item.total}</td>
-          <td>${item.karton}</td>
-          <td>${item.sisa}</td>
+function renderTabel() {
+    let tbody = document.querySelector("#tabelData tbody");
+    tbody.innerHTML = "";
+    dataBarang.forEach((item, index) => {
+        tbody.innerHTML += `
+            <tr>
+                <td><input type="checkbox" ${item.cek ? 'checked' : ''} onchange="ubahCek(${index}, this.checked)"></td>
+                <td>${index + 1}</td>
+                <td><input type="text" value="${item.kode}" onchange="ubahKodeBarang(${index}, this.value)"></td>
+                <td>${item.total}</td>
+                <td><input type="number" value="${item.perDus}" onchange="ubahPcsPerDus(${index}, this.value)"></td>
+                <td>${item.dus}</td>
+                <td>${item.sisa}</td>
+                <td><button class="delete-btn" onclick="hapusData(${index})">Hapus</button></td>
+            </tr>
         `;
-        tbody.appendChild(row);
-      });
-    }
+    });
+}
 
-    function hapusRiwayat() {
-      if (confirm("Hapus semua riwayat?")) {
-        localStorage.removeItem("riwayatKarton");
-        tampilkanRiwayat();
-      }
-    }
+function ubahCek(index, status) {
+    dataBarang[index].cek = status;
+    simpanData();
+}
 
-    window.onload = tampilkanRiwayat;
-  </script>
+function ubahPcsPerDus(index, newPerDus) {
+    newPerDus = parseInt(newPerDus) || 0;
+    let total = dataBarang[index].total;
+    if (newPerDus > 0) {
+        dataBarang[index].perDus = newPerDus;
+        dataBarang[index].dus = Math.floor(total / newPerDus);
+        dataBarang[index].sisa = total % newPerDus;
+        simpanData();
+        renderTabel();
+    }
+}
+
+function ubahKodeBarang(index, newKode) {
+    dataBarang[index].kode = newKode.trim();
+    simpanData();
+}
+
+function hapusData(index) {
+    dataBarang.splice(index, 1);
+    simpanData();
+    renderTabel();
+}
+
+function resetData() {
+    if (confirm("Yakin reset semua data?")) {
+        dataBarang = [];
+        simpanData();
+        renderTabel();
+    }
+}
+
+function simpanData() {
+    localStorage.setItem('dataBarang', JSON.stringify(dataBarang));
+}
+
+renderTabel();
+</script>
+
 </body>
 </html>
